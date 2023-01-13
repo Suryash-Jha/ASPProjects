@@ -1,0 +1,36 @@
+<style>
+li{
+    margin: 20px;
+}
+
+button{
+    height: 40px;
+    width: 80px;
+    margin: 20px;
+
+}
+
+    @{
+        ViewData["Title"] = "Student List";
+        // var data = ViewData["totList"];
+    }
+
+</style>
+<h1>Student List</h1>
+
+
+        @foreach (var std in ViewData["totList"] as Dictionary<int, Dictionary<string, string>>)
+        {   
+            <div style="display: flex;">
+            <li>@std.Value["rollNo"]</li>
+            <li>@std.Value["firstName"] @std.Value["lastName"]</li>
+            <li>@std.Value["gender"]</li>
+            <li>@std.Value["class"]</li>
+            <a href="/Home/Edit">
+            <button value="edit-butt" class="btn btn-primary" asp-action="check">Edit</button>
+            </a>
+            <button class="btn btn-danger" asp-action="check">Delete</button>
+             </div>
+        }
+
+
