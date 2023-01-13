@@ -1,0 +1,7 @@
+CREATE TABLE Student (
+    RollNo int,
+    FirstName varchar(255),
+	LastName varchar(255),
+    Gender varchar(255),
+    Class int
+);
