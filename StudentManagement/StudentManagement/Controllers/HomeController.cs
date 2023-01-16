@@ -4,6 +4,8 @@ using System.Diagnostics;
 using MySql.Data.MySqlClient;
 using System.Collections.Generic;
 using System.Collections;
+using System.Net;
+
 
 namespace StudentManagement.Controllers
 {
@@ -21,6 +23,24 @@ namespace StudentManagement.Controllers
         {
             return View();
         }
+
+        // Get Request Using C#
+
+        // public string FetchReq(){
+        //         using System.Net;
+        //         string url = "https://aquamediumorchidvoxels.suryashjha.repl.co/tasks";
+        //         HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+        //         request.Method = "GET";
+        //         HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+        //         StreamReader reader = new StreamReader(response.GetResponseStream());
+        //         string responseString = reader.ReadToEnd();
+
+        //         Console.WriteLine(responseString);
+        //         return responseString;
+        // }
+
+        
         public IActionResult studentList()
         {
             // Database Connection
@@ -49,11 +69,14 @@ namespace StudentManagement.Controllers
             cmd.Dispose();
             con.Close();
             ViewData["totList"] = totList;
+            // FetchReq();
            // Console.WriteLine(totList[1]["gender"]);
             return View();
         }
-        public IActionResult Login(){
-            string val= Request.Form["email"];
+        
+        public IActionResult Login([FromForm] string email, [FromForm] string password)
+        {
+            string val= email;
             // string pass= Request.Form["trtpassword"];
             // string val=email.Value;
             // string trval=tremail.Value;
