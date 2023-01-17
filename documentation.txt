@@ -94,3 +94,48 @@ For Genarating a pdf file of a template pdf using iTextSharp:
         string templatePath = Server.MapPath("~/Templates/ReceiptTemplate.pdf");
         string outputPath = Server.MapPath("~/PDFs/Receipt.pdf");
         new PDFGenerator().CreatePDF(templatePath, outputPath);
+
+
+For creating a pdf with rows of data:
+        using System;
+        using System.IO;
+        using iTextSharp.text;
+        using iTextSharp.text.pdf;
+
+        public class PDFTable
+        {
+            public void CreatePDF(string filePath)
+            {
+                // Create a new PDF document
+                var document = new Document(PageSize.A4);
+
+                // Create a new PDF writer
+                var pdfWriter = PdfWriter.GetInstance(document, new FileStream(filePath, FileMode.Create));
+
+                // Open the PDF document
+                document.Open();
+
+                // Create a new table with 5 columns
+                PdfPTable table = new PdfPTable(5);
+
+                // Add the table headers
+                table.AddCell("ID");
+                table.AddCell("Name");
+                table.AddCell("Age");
+                table.AddCell("Gender");
+                table.AddCell("Country");
+
+                // Add 5 rows of data
+                table.AddCell("1");
+                table.AddCell("John Doe");
+                table.AddCell("30");
+                table.AddCell("Male");
+                table.AddCell("United States");
+
+                // Add the table to the document
+                document.Add(table);
+
+                // Close the PDF document
+                document.Close();
+            }
+        }
