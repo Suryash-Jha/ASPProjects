@@ -6,6 +6,12 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Net;
 
+//For itextsharp
+using System;
+using System.IO;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+
 
 namespace StudentManagement.Controllers
 {
@@ -18,7 +24,32 @@ namespace StudentManagement.Controllers
             _logger = logger;
         }
 
-         
+             public void CreatePDF(string filePath)
+    {
+        // Create a new PDF document
+        var document = new Document(PageSize.A4, 10, 10, 10, 10);
+
+        // Create a new PDF writer
+        var pdfWriter = PdfWriter.GetInstance(document, new FileStream(filePath, FileMode.Create));
+
+        // Open the PDF document
+        document.Open();
+
+        // Add the receipt content
+        var font = FontFactory.GetFont("Arial", 12);
+        var companyName = new Paragraph("Acme Inc.", font);
+        var companyAddress = new Paragraph("123 Main St, Suite 200, Anytown USA 12345", font);
+        var itemsPurchased = new Paragraph("Item 1: $10.00\nItem 2: $5.00", font);
+        var totalCost = new Paragraph("Total: $15.00", font);
+        document.Add(companyName);
+        document.Add(companyAddress);
+        document.Add(itemsPurchased);
+        document.Add(totalCost);
+
+        // Close the PDF document
+        document.Close();
+    }
+
         public IActionResult Index()
         {
             return View();
@@ -74,14 +105,17 @@ namespace StudentManagement.Controllers
             return View();
         }
         
-        public IActionResult Login([FromForm] string email, [FromForm] string password)
+        public IActionResult Login([FromForm] LoginData response)
         {
-            string val= email;
+
+            string val= response.email;
+            string pass= response.password;
+
             // string pass= Request.Form["trtpassword"];
             // string val=email.Value;
             // string trval=tremail.Value;
 
-            Console.WriteLine(val);
+            Console.WriteLine(val+" "+pass);
             // Console.WriteLine(pass);
 
             return View();
@@ -94,6 +128,9 @@ namespace StudentManagement.Controllers
 
         public IActionResult Privacy()
         {
+            string filePath = "C:\\Users\\HP\\Desktop\\ASPProjects\\StudentManagement\\StudentManagement\\wwwroot\\pdf\\test.pdf";
+            CreatePDF(filePath);
+
             return View();
         }
 
