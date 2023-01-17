@@ -1,0 +1,96 @@
+Solution for getting input from a long form
+
+        public class LoginViewModel
+        {
+            public string Email { get; set; }
+            public string Password { get; set; }
+            // other properties
+        }
+
+        [HttpPost]
+        public IActionResult Login([FromForm] LoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // your login logic here
+            }
+            return View(model);
+        }
+
+
+
+Solution for accessing data from modelData
+
+            if (ModelState["email"].ValidationState == ModelValidationState.Invalid)
+            {
+                string error = ModelState["email"].Errors[0].ErrorMessage;
+                Console.WriteLine(error);
+            }
+
+For Genarating a pdf file using iTextSharp:
+
+		using System;
+        using System.IO;
+        using iTextSharp.text;
+        using iTextSharp.text.pdf;
+
+        public class ReceiptPDF
+        {
+            public void CreatePDF(string filePath)
+            {
+                // Create a new PDF document
+                var document = new Document(PageSize.A4, 10, 10, 10, 10);
+
+                // Create a new PDF writer
+                var pdfWriter = PdfWriter.GetInstance(document, new FileStream(filePath, FileMode.Create));
+
+                // Open the PDF document
+                document.Open();
+
+                // Add the receipt content
+                var font = FontFactory.GetFont("Arial", 12);
+                var companyName = new Paragraph("Acme Inc.", font);
+                var companyAddress = new Paragraph("123 Main St, Suite 200, Anytown USA 12345", font);
+                var itemsPurchased = new Paragraph("Item 1: $10.00\nItem 2: $5.00", font);
+                var totalCost = new Paragraph("Total: $15.00", font);
+                document.Add(companyName);
+                document.Add(companyAddress);
+                document.Add(itemsPurchased);
+                document.Add(totalCost);
+
+                // Close the PDF document
+                document.Close();
+            }
+        }
+
+
+For Genarating a pdf file of a template pdf using iTextSharp:
+          public void CreatePDF(string templatePath, string outputPath)
+            {
+                // Create a new PDF reader
+                PdfReader reader = new PdfReader(templatePath);
+
+                // Create a new PDF stamper
+                PdfStamper stamper = new PdfStamper(reader, new FileStream(outputPath, FileMode.Create));
+
+                // Get the form fields of the template
+                AcroFields fields = stamper.AcroFields;
+
+                // Fill the form fields with dynamic data
+                fields.SetField("CompanyName", "Acme Inc.");
+                fields.SetField("Address", "123 Main St, Suite 200, Anytown USA 12345");
+                fields.SetField("Item1", "$10.00");
+                fields.SetField("Item2", "$5.00");
+                fields.SetField("Total", "$15.00");
+
+                // Close the PDF stamper
+                stamper.Close();
+            }
+        }
+
+
+
+
+        string templatePath = Server.MapPath("~/Templates/ReceiptTemplate.pdf");
+        string outputPath = Server.MapPath("~/PDFs/Receipt.pdf");
+        new PDFGenerator().CreatePDF(templatePath, outputPath);
