@@ -1,0 +1,24 @@
+<style>
+</style>
+
+<div class="container">
+<h1 id="status">
+ @if(@ViewData["status"]== "success")
+ {
+     <div class="alert alert-success" role="alert">
+         @ViewData["status"]
+     </div>
+ }
+ else 
+ {
+     <div class="alert alert-danger" role="alert">
+         @ViewData["status"]
+     </div>
+ }
+</h1> 
+<form method="post" runat="server">
+EMAIL: <input type="text" name="email" id="email" runat="server" />
+PASSWORD: <input type="password" name="password" id="password" runat="server" />
+<input type="submit" value="Submit" />
+</form>
+</div>
